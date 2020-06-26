@@ -9,10 +9,9 @@ class User extends Component {
         super(props)
 
     }
-    componentDidMount() {
-        
-        this.fetchUserList()
-    }
+    // componentDidMount() {
+    //     this.fetchUserList()
+    // }
     // componentDidMount周期在服务端不会执行
     // 在componentDidMount判断userList即是判断是否是ssr，如果走的是ssr，则asyncData被执行了
     // 也即userList
@@ -35,6 +34,21 @@ class User extends Component {
 
     fetchUserList = async () => {
         const data = await requesUserList();
+        console.log(data)
+    }
+
+    createUser = async () => {
+        const { requestCreateUser } = this.props;
+        try {
+            const data = await requestCreateUser({
+                userName: 'tester2',
+                password: 'test'
+            });
+            console.log(data)
+            console.log(this.props.result)
+        } catch (error) {
+            console.log(error)
+        }
     }
     render() {
         return (
@@ -45,15 +59,15 @@ class User extends Component {
                     ) : (
                             <ul>
                                 {
-                                    this.props.userList?.map((item) => <li key={item.name}>
-                                        <p>{item.name}</p>
-                                        <p>{item.email}</p>
+                                    this.props.userList?.map((item) => <li key={item.id}>
+                                        <p>{item.userName}</p>
+                                        <p>{item.role}</p>
                                     </li>)
                                 }
                             </ul>
                         )
                 }
-
+                <div onClick={this.createUser}>注册用户</div>
             </BasicLayout>
 
         )
@@ -67,6 +81,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispath) {
     return {
         fetchUserList: () => dispath(userActions.fetchUserList()),
+        requestCreateUser: (request) => dispath(userActions.requestCreateUser(request)),
         reset: () => dispath(userActions.reset())
     }
 }

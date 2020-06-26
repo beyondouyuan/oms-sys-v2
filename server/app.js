@@ -1,5 +1,6 @@
 const Koa = require('koa');
 const Router = require('koa-router');
+const koaBody = require('koa-body');
 const path = require('path');
 const render = require('./render');
 const fs = require('fs');
@@ -11,6 +12,7 @@ const env = process.env.NODE_ENV
 const config = require('../project.config')[env];
 const isPro = process.env.NODE_ENV === 'production';
 
+const logger = require('./logger');
 
 const router = new Router();
 
@@ -35,6 +37,17 @@ router.get('*', async (ctx, next) => {
     }
     next();
 })
+app.use(koaBody({
+    multipart: true,
+    // encoding:'gzip',
+    formidable: {
+        uploadDir: path.join(__dirname, './public/upload/'), // path
+        maxFieldsSize: 10 * 1024 * 1024,
+        multipart: true
+    }
+}))
+
+logger.initPath()
 
 app.use(require('koa-static')(path.join(__dirname, '../dist')));
 // api

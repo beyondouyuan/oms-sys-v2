@@ -4,11 +4,11 @@ class BaseService {
     constructor(props) {
 
     }
-    static renderApiData(response) {
-        return renderApiData(response)
+    static renderApiData(ctx, response) {
+        return renderApiData(ctx, response)
     }
-    static renderApiError(error) {
-        return renderApiError(error)
+    static renderApiError(ctx, error) {
+        return renderApiError(ctx, error)
     }
 }
 

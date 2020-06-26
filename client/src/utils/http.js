@@ -41,13 +41,13 @@ service.interceptors.response.use(
         const body = response ? response.data : {};
         const config = response ? response.config : undefined;
         // ajax错误
-        if (!body) {
-            throw new ApiServiceError(config, '没响应数据', 500);
-        }
-        // node服务端错误
-        if (body.code !== 0) {
-            throw new ApiServerError(config, `${body.msg}`, body.code);
-        }
+        // if (!body) {
+        //     throw new ApiServiceError(config, '没响应数据', 500);
+        // }
+        // // node服务端错误
+        // if (body.code !== 0) {
+        //     throw new ApiServerError(config, `${body.msg}`, body.code);
+        // }
         return body;
     },
     // error => {
