@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import {
+    Table,
+    Divider,
+    Button
+} from 'antd';
+const { Column } = Table;
+
 import BasicLayout from '../../layouts/BasicLayout';
 import * as userActions from '../../redux/actions/user';
 import { requesUserList } from '../../service/user';
-
+import { createCrypto } from '../../utils/crypto';
 class User extends Component {
     constructor(props) {
         super(props)
-
     }
     // componentDidMount() {
     //     this.fetchUserList()
@@ -41,8 +47,10 @@ class User extends Component {
         const { requestCreateUser } = this.props;
         try {
             const data = await requestCreateUser({
-                userName: 'tester2',
-                password: 'test'
+                account: 'tester2',
+                password: createCrypto('test'),
+                name: 'ouyuan',
+                userType: '0'
             });
             console.log(data)
             console.log(this.props.result)
@@ -53,21 +61,70 @@ class User extends Component {
     render() {
         return (
             <BasicLayout>
-                {
+                <Table
+                    dataSource={this.props.userList}
+                    rowKey={record => record.id}
+                    bordered
+                    loading={this.props.loaded}
+                >
+                    <Column
+                        title="姓名"
+                        dataIndex="name"
+                        key="name"
+                        width="150px"
+                        align="center"
+                    />
+                    <Column
+                        title="昵称"
+                        dataIndex="account"
+                        key="account"
+                        width="150px"
+                        align="center"
+                    />
+                    <Column
+                        title="类型"
+                        dataIndex="type"
+                        key="type"
+                        width="150px"
+                        align="center"
+                    />
+                    <Column
+                        title="权限"
+                        dataIndex="root"
+                        key="root"
+                        width="150px"
+                        align="center"
+                    />
+                    <Column
+                        title="状态"
+                        dataIndex="off"
+                        key="off"
+                        width="150px"
+                        align="center"
+                    />
+                    <Column
+                        title="创建时间"
+                        dataIndex="createTime"
+                        key="createTime"
+                        width="150px"
+                        align="center"
+                    />
+                </Table>
+                {/* {
                     this.props.loaded ? (
                         <div>loading...</div>
                     ) : (
                             <ul>
                                 {
                                     this.props.userList?.map((item) => <li key={item.id}>
-                                        <p>{item.userName}</p>
-                                        <p>{item.role}</p>
+                                        <p>{item.name}</p>
+                                        <p>{item.account}</p>
                                     </li>)
                                 }
                             </ul>
                         )
                 }
-                <div onClick={this.createUser}>注册用户</div>
+                <div onClick={this.createUser}>注册用户</div> */}
             </BasicLayout>
 
         )

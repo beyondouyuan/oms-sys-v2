@@ -16,7 +16,7 @@
 module.exports = {
   port: 3000,
   database: {
-    DATABASE: 'omssys2',
+    DATABASE: 'ktvsystem',
     USER: 'root',
     PASSWORD: 'oujunyuan',
     PORT: '3306',

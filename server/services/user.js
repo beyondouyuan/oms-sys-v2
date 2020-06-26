@@ -1,5 +1,7 @@
 const BaseService = require('../core/base-service');
-const sql = require('../db');
+const query = require('../db');
+const UUID = require('node-uuid');
+
 
 class UserService extends BaseService {
     constructor(props) {
@@ -10,10 +12,12 @@ class UserService extends BaseService {
         try {
             request = typeof request == 'string' ? JSON.parse(request) : request
             const {
-                userName,
-                password
+                account,
+                password,
+                userType,
+                name
             } = request;
-            const user = await sql.findUser(userName);
+            const user = await query(`SELECT * FROM users WHERE account = ? AND off != 1`, [account])
             if(user.length > 0) {
                 const result = {
                     responseCode: 102,
@@ -24,10 +28,9 @@ class UserService extends BaseService {
                 }
                 return this.renderApiError(ctx, result);
             }
+            const uuid = UUID.v1();
             const createTime = new Date().getTime()
-            const role = '1'
-            const avatar = 'https://beyondouyuan.github.io/img/ouyuan.jpg'
-            await sql.createUser([userName, password, avatar, role, createTime])
+            await query(`INSERT INTO users (uuid, name, account, password, type, root, createTime) VALUES ( ?, ?, ?, ?, ?, ?, ? )`, [uuid, name, account, password, userType, userType, createTime])
             const data = {
                 'result': '注册成功',
             };
@@ -50,7 +53,7 @@ class UserService extends BaseService {
     }
 
     static async get(ctx, request) {
-        const res = await sql.findAllUsers();
+        const res = await query(`SELECT * FROM users WHERE off != 1`);
         const data = {
             list: res
         };
