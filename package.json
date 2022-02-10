@@ -60,7 +60,7 @@
     "koa-webpack-hot-middleware": "^1.0.3",
     "mini-css-extract-plugin": "^0.9.0",
     "mysql": "^2.18.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
